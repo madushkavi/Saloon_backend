@@ -39,3 +39,5 @@ Route::put('/servicesedit/{id}', [ServiceController::class, 'update']); // Updat
 Route::delete('/servicesdel/{id}', [ServiceController::class, 'destroy']); // Delete a service
 Route::post('/send-email', 'ContactController@sendEmail');
 
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/register', [UserController::class,'register']);
