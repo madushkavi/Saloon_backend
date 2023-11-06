@@ -9,7 +9,8 @@ use App\Models\User;
 use App\Models\Appointment;
 use App\Models\Service;
 
-use App\Http\Controllers\UserController; 
+use App\Http\Controllers\UserController;
+use App\Models\Admin;
 
 Route::get('/users/search', [UserController::class, 'search']);
 
@@ -26,6 +27,10 @@ Route::get('/appointments', function () {
 Route::get('/servicesview', function () {
     $services = Service::all();
     return response()->json($services);
+});
+Route::get('/adminview', function () {
+    $admins = Admin::first();
+    return response()->json($admins);
 });
 
 
