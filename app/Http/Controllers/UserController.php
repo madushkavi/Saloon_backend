@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function search(Request $request)
     {
-        $query = $request->input('query'); 
+        $query = $request->input('query');
 
-        
+
         $results = User::where('name', 'like', "%$query%")
             ->orWhere('email', 'like', "%$query%")
             ->get();
@@ -37,27 +37,32 @@ class UserController extends Controller
         }
     }
 
-    public function register(Request $request) {
-        $request -> validate([
-            'name' => 'required',
-            'email' => 'required | email',
-            'password' => 'required | min:6 | alpha_num',
-            'phone' => 'required | min:10 | max:10',
-            'sex' => 'required',
-        ]);
+    public function register(Request $request)
+    {
+        // $request->validate([
+        //     'name' => 'required',
+        //     'email' => 'required',
+        //     'password' => 'required',
+        //     'phone' => 'required',
+        //     'sex' => 'required',
+        // ]);
 
         $user = new User([
-            'name' => $request -> name,
-            'email' => $request -> email,
-            'phone' => $request -> phone,
-            'sex' => $request -> sex,
-            'password' => $request -> password,
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'sex' => $request->input('sex'),
+            'password' => $request->input('password'),
         ]);
 
-        if ($user -> save()) {
-            return response()->json(['message' => 'user created successfully.']));
-        } else {
-            return response()->json(['message'=> 'something went wrong.']);
+        try {
+            if ($user->save()) {
+                return response()->json(['status' => 'success', 'message' => 'user created successfully.']);
+            } else {
+                return response()->json(['status' => 'error', 'message'=> 'something went wrong.']);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['status' => 'error', 'message'=> $th]);
         }
     }
 }
